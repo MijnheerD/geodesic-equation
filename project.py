@@ -8,7 +8,7 @@ x = Symbol('x')
 y = Symbol('y')
 z = Symbol('z')
 
-g = np.array([[t,0,0,0],[0,x,0,0],[0,0,y,0],[0,0,0,z]])
+g = np.array([[t,0,0,0],[0,x,0,0],[0,0,y,0],[0,0,0,z],[t,0,t,0]])
 
 def diffMetric(g,mu):
     shape = g.shape
@@ -20,4 +20,4 @@ def diffMetric(g,mu):
             d[row, column] = diff(g[row,column],mu)
     return d
 
-print(diffMetric(g,y))
+print(diffMetric(g,t))
