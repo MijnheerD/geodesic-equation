@@ -22,10 +22,10 @@ class Spacetime:
         return d
 
     def diffMetric(self, pos, mu): #Mu given as number
-        return diff(g[pos[0], pos[1]], self.__symbols[mu])
+        return diff(self.metric[pos[0], pos[1]], self.__symbols[mu])
 
     def chrisSymbol(self, up, down1, down2):
-        return 0.5*sum([g[up, m] * self.diffMetric([m, down1], down2)+g[up, m] * self.diffMetric([m, down2], down1)-g[up, m] * self.diffMetric([down1, down2], m) for m in range(4)])
+        return 0.5*sum([self.metric[up, m] * self.diffMetric([m, down1], down2)+self.metric[up, m] * self.diffMetric([m, down2], down1)-self.metric[up, m] * self.diffMetric([down1, down2], m) for m in range(4)])
 
 
 t = Symbol('t')
@@ -42,7 +42,7 @@ print(ST.chrisSymbol(1,1,1))
 g_schwartz=np.array([[-(1-1/x),0,0,0],[0,1/(1-1/x),0,0],[0,0,x**2,0],[0,0,0,x**2*np.sin(3)]])
 
 print(g[1,1])
-ST = Spacetime(g)
+
 ST2= Spacetime(g_schwartz)
 print(ST.chrisSymbol(1,1,1))
 print(ST2.chrisSymbol(3,3,3))
