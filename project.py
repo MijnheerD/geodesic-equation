@@ -26,7 +26,8 @@ class Spacetime:
 
     def chrisSymbol(self, up, down1, down2):
         return 0.5*sum([self.metric[up, m] * self.diffMetric([m, down1], down2)+self.metric[up, m] * self.diffMetric([m, down2], down1)-self.metric[up, m] * self.diffMetric([down1, down2], m) for m in range(4)])
-
+    def geodesiceq(self, x, g, alpha, beta, gamma):
+        y[0]=
 
 t = Symbol('t')
 x = Symbol('x')
