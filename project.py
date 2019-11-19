@@ -4,8 +4,6 @@ from sympy import *
 import numpy as np
 
 
-#Should make a class "Spacetime" with property g
-
 class Spacetime:
     def __init__(self, g):
         self.metric = g
@@ -26,7 +24,24 @@ class Spacetime:
 
     def chrisSymbol(self, up, down1, down2):
         return 0.5*sum([self.metric[up, m] * self.diffMetric([m, down1], down2)+self.metric[up, m] * self.diffMetric([m, down2], down1)-self.metric[up, m] * self.diffMetric([down1, down2], m) for m in range(4)])
-   
+
+
+def geodesicEq(x, spacetime):
+        if len(x)!=8:
+            raise TypeError("Input vector must have length 8")
+        if type(spacetime) != Spacetime:
+            raise TypeError("Input spacetime must be of type Spacetime")
+        u = [0]*8
+        for i in range(4):
+            u[i] = x[i+4]
+        for i in range(4,8):
+            v = [spacetime.chrisSymbol(i-4,a,b)*u[a]*u[b] for a in range(4) for b in range(4)]
+            p = -sum(v)
+            u[i] = p
+            #there seems to be a problem in stating this. I already tried to first set p=sum(v) and then u[i]=p but the error stays 
+            # "can't expression convert to float" =( :( 
+        return u
+
 
 t = Symbol('t')
 x = Symbol('x')
@@ -34,29 +49,10 @@ y = Symbol('y')
 z = Symbol('z')
 
 g = np.array([[t,0,0,0],[0,x,0,0],[0,0,y,0],[0,0,0,z]])
-
 ST = Spacetime(g)
-print(ST.chrisSymbol(1,1,1))
 
-
-#test on Schwarzschild metric
-#put rs=1, r=x theta=3
 g_schwartz=np.array([[-(1-1/x),0,0,0],[0,1/(1-1/x),0,0],[0,0,x**2,0],[0,0,0,x**2*np.sin(3)]])
 ST2= Spacetime(g_schwartz)
-print(ST2.chrisSymbol(3,3,3))
 
-
-#implement geodesic equation given a metrix g and vector x
-def geodesiceq(self, x,g):
-        u=np.zeros(8)
-        for i in range(4):
-            u[i]=x[i+4]
-        for i in range(4,8):
-            #First define Metric as Spacetime(g) because Python doesn't like it when you do Spacetime(g).chrisSymbol at once
-            Metric=Spacetime(g)
-            v=[Metric.chrisSymbol(i-4,a,b)*u[a]*u[b] for a in range(4) for b in range(4)]
-            p=sum(v)
-            u[i]=p
-            #there seems to be a problem in stating this. I already tried to first set p=sum(v) and then u[i]=p but the error stays 
-            # "can't expression convert to float" =( :( 
-        return u
+x = [1,1,2,3,3,4,3,5]
+print(geodesicEq(x,ST2))
