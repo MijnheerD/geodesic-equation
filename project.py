@@ -51,7 +51,7 @@ def geodesiceq(self, x,g):
         u=np.zeros(8)
         for i in range(3):
             u[i]=x[i+4]
-        for i in range(4,8)
+        for i in range(4,8):
         v=[Spacetime(g).chrisSymbol(i-4,a,b)*u[a]*u[b] for a in range(3) for b in range(3)]
         u[i]=sum(v)
         return u
