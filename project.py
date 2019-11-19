@@ -49,10 +49,14 @@ print(ST2.chrisSymbol(3,3,3))
 #implement geodesic equation given a metrix g and vector x
 def geodesiceq(self, x,g):
         u=np.zeros(8)
-        for i in range(3):
+        for i in range(4):
             u[i]=x[i+4]
         for i in range(4,8):
+            #First define Metric as Spacetime(g) because Python doesn't like it when you do Spacetime(g).chrisSymbol at once
             Metric=Spacetime(g)
-            v=[Metric.chrisSymbol(i-4,a,b)*u[a]*u[b] for a in range(3) for b in range(3)]
-            u[i]=sum(v)
+            v=[Metric.chrisSymbol(i-4,a,b)*u[a]*u[b] for a in range(4) for b in range(4)]
+            p=sum(v)
+            u[i]=p
+            #there seems to be a problem in stating this. I already tried to first set p=sum(v) and then u[i]=p but the error stays 
+            # "can't expression convert to float" =( :( 
         return u
