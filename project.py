@@ -37,13 +37,11 @@ g = np.array([[t,0,0,0],[0,x,0,0],[0,0,y,0],[0,0,0,z]])
 
 ST = Spacetime(g)
 print(ST.chrisSymbol(1,1,1))
+
+
 #test on Schwarzschild metric
 #put rs=1, r=x theta=3
 g_schwartz=np.array([[-(1-1/x),0,0,0],[0,1/(1-1/x),0,0],[0,0,x**2,0],[0,0,0,x**2*np.sin(3)]])
-
-print(g[1,1])
-
 ST2= Spacetime(g_schwartz)
-print(ST.chrisSymbol(1,1,1))
 print(ST2.chrisSymbol(3,3,3))
-#Warning the last print gives us 0.5z, this doesn't seem to be normal
+
