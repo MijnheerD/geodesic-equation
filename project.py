@@ -26,8 +26,7 @@ class Spacetime:
 
     def chrisSymbol(self, up, down1, down2):
         return 0.5*sum([self.metric[up, m] * self.diffMetric([m, down1], down2)+self.metric[up, m] * self.diffMetric([m, down2], down1)-self.metric[up, m] * self.diffMetric([down1, down2], m) for m in range(4)])
-    def geodesiceq(self, x, g, alpha, beta, gamma):
-        y[0]=
+   
 
 t = Symbol('t')
 x = Symbol('x')
@@ -46,3 +45,13 @@ g_schwartz=np.array([[-(1-1/x),0,0,0],[0,1/(1-1/x),0,0],[0,0,x**2,0],[0,0,0,x**2
 ST2= Spacetime(g_schwartz)
 print(ST2.chrisSymbol(3,3,3))
 
+
+#implement geodesic equation given a metrix g and vector x
+def geodesiceq(self, x,g):
+        u=np.zeros(8)
+        for i in range(3):
+            u[i]=x[i+4]
+        for i in range(4,8)
+        v=[Spacetime(g).chrisSymbol(i-4,a,b)*u[a]*u[b] for a in range(3) for b in range(3)]
+        u[i]=sum(v)
+        return u
