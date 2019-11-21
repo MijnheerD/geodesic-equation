@@ -43,7 +43,7 @@ def geodesicEq(x, s, spacetime):
 
 #This function doesn't work yet as I don't know how odeint works with s as there is no s dependency in geodesicEq    
 def solveGE(geodesicEq,xinit,ds,s0,s1,spacetime):
-    s=np.arrange(s0,s1+ds,ds)
+    s=np.arange(s0,s1+ds,ds)
     solution=odeint(geodesicEq,xinit,s,args=(spacetime,))
     sol=[]
     for i in solution:
