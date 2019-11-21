@@ -26,8 +26,8 @@ class Spacetime:
     def chrisSymbol(self, up, down1, down2):
         return 0.5*sum([self.metric[up, m] * self.diffMetric([m, down1], down2)+self.metric[up, m] * self.diffMetric([m, down2], down1)-self.metric[up, m] * self.diffMetric([down1, down2], m) for m in range(4)])
 
-
-def geodesicEq(x, spacetime):
+#I added an s argument in order to use odeint for solving the difeq
+def geodesicEq(x, s, spacetime):
         if len(x)!=8:
             raise TypeError("Input vector must have length 8")
         if type(spacetime) != Spacetime:
