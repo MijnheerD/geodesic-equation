@@ -2,6 +2,7 @@
 
 from sympy import *
 import numpy as np
+from scipy.integrate import odeint
 
 
 class Spacetime:
@@ -38,11 +39,20 @@ def geodesicEq(x, spacetime):
             v = [spacetime.chrisSymbol(i-4,a,b)*u[a]*u[b] for a in range(4) for b in range(4)]
             p = -sum(v)
             u[i] = p
-            #there seems to be a problem in stating this. I already tried to first set p=sum(v) and then u[i]=p but the error stays 
-            # "can't expression convert to float" =( :( 
         return u
 
+#This function doesn't work yet as I don't know how odeint works with s as there is no s dependency in geodesicEq    
+def solveGE(geodesicEq,xinit,ds,s0,s1,spacetime):
+    s=np.arrange(s0,s1+ds,ds)
+    solution=odeint(geodesicEq,xinit,s,args=(spacetime,))
+    sol=[]
+    for i in solution:
+        sol.append([i[0:4]])
+    return sol
 
+
+
+#Examples of Metrics
 t = Symbol('t')
 x = Symbol('x')
 y = Symbol('y')
@@ -54,5 +64,6 @@ ST = Spacetime(g)
 g_schwartz=np.array([[-(1-1/x),0,0,0],[0,1/(1-1/x),0,0],[0,0,x**2,0],[0,0,0,x**2*np.sin(3)]])
 ST2= Spacetime(g_schwartz)
 
+#Test GeodesicEq
 x = [1,1,2,3,3,4,3,5]
 print(geodesicEq(x,ST2))
