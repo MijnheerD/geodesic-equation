@@ -49,7 +49,31 @@ def solveGE(geodesicEq,xinit,ds,s0,s1,spacetime):
     for i in solution:
         sol.append([i[0:4]])
     return sol
+#Let's try with RK4=> still an error but now it says "
+#TypeError: can't multiply sequence by non-int of type 'float'
+#and the problem lays in k1 = h * f(yn,tn,spacetime) 
 
+def RK4(yn, f, tn, h,spacetime):
+        k1 = h * f(yn,tn,spacetime) 
+        k2 = h * f(yn + 0.5 * k1,tn + 0.5 * h,spacetime) 
+        k3 = h * f(yn + 0.5 * k2,tn + 0.5 * h,spacetime) 
+        k4 = h * f(yn + k3, tn + h,spacetime)
+        return yn + (1.0 / 6.0)*(k1 + 2 * k2 + 2 * k3 + k4) 
+
+def solveGE2(geodesicEq,xinit,ds,s0,s1,spacetime,h):
+    s=np.arange(s0,s1+ds,ds)
+    solution=RK4(xinit,geodesicEq,s,h,spacetime)
+    sol=[]
+    for i in solution:
+        sol.append([i[0:4]])
+    return sol
+
+s0=1
+s1=2
+ds=0.01
+s = np.arange(s0,s1+ds,ds)
+x = [1,1,2,3,3,4,3,5]
+u=solveGE2(geodesicEq,x,ds,s0,s1,ST2,0.5)
 
 
 #Examples of Metrics
