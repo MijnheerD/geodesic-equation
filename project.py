@@ -41,7 +41,7 @@ def geodesicEq(x, s, spacetime):
             u[i] = p
         return u
 
-#This function doesn't work yet as I don't know how odeint works with s as there is no s dependency in geodesicEq    
+#This function gives A type error for line solution=odeint(geodesicEq,xinit,s,args=(spacetime,)) when calling it   
 def solveGE(geodesicEq,xinit,ds,s0,s1,spacetime):
     s=np.arange(s0,s1+ds,ds)
     solution=odeint(geodesicEq,xinit,s,args=(spacetime,))
