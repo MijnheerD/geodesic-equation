@@ -10,6 +10,9 @@ class Spacetime:
         self.metric = g
         self.__symbols = [t, x, y, z]
 
+    def symbols(self): #Maybe use this to only give back the symbols used in the metric?
+        return self.__symbols
+
     def diffFullMetric(self, mu):  # Overkill for Christoffel symbols, might be useful later on
         shape = self.metric.shape
         d = np.full(shape, 0)
@@ -33,12 +36,13 @@ def geodesicEq(x, s, spacetime):
         if type(spacetime) != Spacetime:
             raise TypeError("Input spacetime must be of type Spacetime")
         u = [0]*8
+        symb = spacetime.symbols()  # Maybe only put symbols here that are actually in the metric?
         for i in range(4):
             u[i] = x[i+4]
         for i in range(4,8):
             v = [spacetime.chrisSymbol(i-4,a,b)*u[a]*u[b] for a in range(4) for b in range(4)]
             p = -sum(v)
-            u[i] = p
+            u[i] = p.subs([(symb[0],x[0]),(symb[1],x[1]),(symb[2],x[2]),(symb[3],x[3])])
         return u
 
 #This function gives A type error for line solution=odeint(geodesicEq,xinit,s,args=(spacetime,)) when calling it   
@@ -97,7 +101,7 @@ s0 = 1
 s1 = 5
 ds = 1
 s = np.arange(s0,s1+ds,ds)
-x = [1,1,2,3,3,4,3,5]
+x = [2,3,4,5,2,3,4,5]
 
 #geodesicEq
 #print(geodesicEq(x,2,ST2))
