@@ -29,7 +29,6 @@ class Spacetime:
     def chrisSymbol(self, up, down1, down2):
         return 0.5*sum([self.metric[up, m] * self.diffMetric([m, down1], down2)+self.metric[up, m] * self.diffMetric([m, down2], down1)-self.metric[up, m] * self.diffMetric([down1, down2], m) for m in range(4)])
 
-#I added an s argument in order to use odeint for solving the difeq
 def geodesicEq(x, s, spacetime):
         if len(x)!=8:
             raise TypeError("Input vector must have length 8, not "+str(len(x)))
@@ -44,19 +43,14 @@ def geodesicEq(x, s, spacetime):
             p = -sum(v)
             u[i] = p.subs([(symb[0],x[0]),(symb[1],x[1]),(symb[2],x[2]),(symb[3],x[3])])
         return u
-
-#This function gives A type error for line solution=odeint(geodesicEq,xinit,s,args=(spacetime,)) when calling it   
+  
 def solveGE(equation,xinit,ds,s0,s1,spacetime):
-    print(ds)
     s=np.arange(s0,s1+ds,ds)
     solution=odeint(equation,xinit,s,args=(spacetime,), mxstep=10)
     sol=[]
     for i in solution:
         sol.append([i[0:4]])
     return sol
-#Let's try with RK4=> still an error but now it says "
-#TypeError: can't multiply sequence by non-int of type 'float'
-#and the problem lays in k1 = h * f(yn,tn,spacetime)
 
 def list_mul(lst, f):
     return [f * elem for elem in lst]
