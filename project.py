@@ -106,3 +106,24 @@ print(u)
 
 u2 = solveGE(geodesicEq,x,ds,s0,s1,ST2)
 print(u2)
+
+
+#Lets compare our results with the ones given by implemented python functions by using GraviPy
+# On my computer this always gives error "Coordinates" is not defined...Don't know what yours is saying?
+
+from gravipy import *
+init_printing()
+
+t,x,y,z = symbols('t x y z')
+
+x = Coordinates('\chi', [t, x, y, z])
+
+ShwartzMetric = diag(-(1-1/x),1/(1-1/x),x**2,x**2*np.sin(3))
+
+gSwartz = MetricTensor('gSwartz', x, ShwartzMetric)
+
+tau = symbols('\\tau')
+
+geodesicShwartz=Geodesic('w', g, tau)
+
+#Other package we should use is Einsteinpy but this is only useable when we choose one specific object
