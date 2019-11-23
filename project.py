@@ -46,9 +46,10 @@ def geodesicEq(x, s, spacetime):
         return u
 
 #This function gives A type error for line solution=odeint(geodesicEq,xinit,s,args=(spacetime,)) when calling it   
-def solveGE(geodesicEq,xinit,ds,s0,s1,spacetime):
+def solveGE(equation,xinit,ds,s0,s1,spacetime):
+    print(ds)
     s=np.arange(s0,s1+ds,ds)
-    solution=odeint(geodesicEq,xinit,s,args=(spacetime,))
+    solution=odeint(equation,xinit,s,args=(spacetime,), mxstep=10)
     sol=[]
     for i in solution:
         sol.append([i[0:4]])
@@ -70,12 +71,12 @@ def rkStep(yn, f, tn, h,spacetime):
         k4 = [h * elem for elem in f(list_sum(yn, k3), tn + h, spacetime)]
         return list_sum(yn, [(1.0 / 6.0) * elem for elem in (k1 + 2 * k2 + 2 * k3 + k4)])
 
-def RK4(geodesicEq,xinit,ds,s0,s1,spacetime,h):
+def RK4(equation,xinit,ds,s0,s1,spacetime):
     s=np.arange(s0,s1+ds,ds)
     sol=[]
     x = xinit
     for t in s:
-        x = rkStep(x,geodesicEq,t,h,spacetime)
+        x = rkStep(x,equation,t,ds,spacetime)
         sol.append(x[0:4])
     return sol
 
@@ -100,18 +101,14 @@ ST2= Spacetime(g_schwartz)
 s0 = 1
 s1 = 5
 ds = 1
-s = np.arange(s0,s1+ds,ds)
 x = [2,3,4,5,2,3,4,5]
 
 #geodesicEq
 #print(geodesicEq(x,2,ST2))
 
 #solver
-u=RK4(geodesicEq,x,ds,s0,s1,ST2,0.5)
+u = RK4(geodesicEq,x,ds,s0,s1,ST2)
 print(u)
 
-#sol = []
-#solution = solve_ivp(lambda t, y: geodesicEq(y,t,ST), (s0,s1), x,args=(ST,))
-#for i in solution:
-#    sol.append([i[0:4]])
-#print(sol)
+u2 = solveGE(geodesicEq,x,ds,s0,s1,ST2)
+print(u2)
