@@ -5,11 +5,12 @@ t = Symbol('t')
 x = Symbol('x')
 y = Symbol('y')
 z = Symbol('z')
+theta=Symbol('theta')
 
 g = np.array([[t,0,0,0],[0,x,0,0],[0,0,y,0],[0,0,0,z]])
 ST = Spacetime(g)
 
-g_schwartz=np.array([[-(1-1/x),0,0,0],[0,1/(1-1/x),0,0],[0,0,x**2,0],[0,0,0,x**2*np.sin(3)]])
+g_schwartz=np.array([[-(1-1/x),0,0,0],[0,1/(1-1/x),0,0],[0,0,x**2,0],[0,0,0,x**2*np.sin(theta)]])
 ST2= Spacetime(g_schwartz)
 
 
