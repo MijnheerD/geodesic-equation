@@ -8,7 +8,7 @@ from scipy.integrate import solve_ivp, odeint
 class Spacetime:
     def __init__(self, g):
         self.metric = g
-        self.__symbols = [t, x, y, z]
+        self.__symbols = [Symbol('t'), Symbol('x'), Symbol('y'), Symbol('z')]
 
     def symbols(self): #Maybe use this to only give back the symbols used in the metric?
         return self.__symbols
@@ -45,18 +45,14 @@ def geodesicEq(x, s, spacetime):
             u[i] = p.subs([(symb[0],x[0]),(symb[1],x[1]),(symb[2],x[2]),(symb[3],x[3])])
         return u
 
-#This function gives A type error for line solution=odeint(geodesicEq,xinit,s,args=(spacetime,)) when calling it   
+
 def solveGE(equation,xinit,ds,s0,s1,spacetime):
-    print(ds)
     s=np.arange(s0,s1+ds,ds)
     solution=odeint(equation,xinit,s,args=(spacetime,), mxstep=10)
     sol=[]
     for i in solution:
         sol.append([i[0:4]])
     return sol
-#Let's try with RK4=> still an error but now it says "
-#TypeError: can't multiply sequence by non-int of type 'float'
-#and the problem lays in k1 = h * f(yn,tn,spacetime)
 
 def list_mul(lst, f):
     return [f * elem for elem in lst]
@@ -79,36 +75,3 @@ def RK4(equation,xinit,ds,s0,s1,spacetime):
         x = rkStep(x,equation,t,ds,spacetime)
         sol.append(x[0:4])
     return sol
-
-
-
-#Examples of Metrics
-t = Symbol('t')
-x = Symbol('x')
-y = Symbol('y')
-z = Symbol('z')
-
-print(0.5*t)
-
-g = np.array([[t,0,0,0],[0,x,0,0],[0,0,y,0],[0,0,0,z]])
-ST = Spacetime(g)
-
-g_schwartz=np.array([[-(1-1/x),0,0,0],[0,1/(1-1/x),0,0],[0,0,x**2,0],[0,0,0,x**2*np.sin(3)]])
-ST2= Spacetime(g_schwartz)
-
-
-#Testing
-s0 = 1
-s1 = 5
-ds = 1
-x = [2,3,4,5,2,3,4,5]
-
-#geodesicEq
-#print(geodesicEq(x,2,ST2))
-
-#solver
-u = RK4(geodesicEq,x,ds,s0,s1,ST2)
-print(u)
-
-u2 = solveGE(geodesicEq,x,ds,s0,s1,ST2)
-print(u2)
