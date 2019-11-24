@@ -82,8 +82,6 @@ x = Symbol('x')
 y = Symbol('y')
 z = Symbol('z')
 
-print(0.5*t)
-
 g = np.array([[t,0,0,0],[0,x,0,0],[0,0,y,0],[0,0,0,z]])
 ST = Spacetime(g)
 
@@ -95,35 +93,38 @@ ST2= Spacetime(g_schwartz)
 s0 = 1
 s1 = 5
 ds = 1
-x = [2,3,4,5,2,3,4,5]
+u0 = [2,3,4,5,2,3,4,5]
 
 #geodesicEq
-#print(geodesicEq(x,2,ST2))
+#print(geodesicEq(u0,2,ST2))
 
 #solver
-u = RK4(geodesicEq,x,ds,s0,s1,ST2)
+'''
+u = RK4(geodesicEq,u0,ds,s0,s1,ST2)
 print(u)
 
-u2 = solveGE(geodesicEq,x,ds,s0,s1,ST2)
+u2 = solveGE(geodesicEq,u0,ds,s0,s1,ST2)
 print(u2)
-
+'''
 
 #Lets compare our results with the ones given by implemented python functions by using GraviPy
-# On my computer this always gives error "Coordinates" is not defined...Don't know what yours is saying?
 
-from gravipy import *
+from gravipy.tensorial import *
 init_printing()
 
-t,x,y,z = symbols('t x y z')
+t, r, theta, phi, M = symbols('t, r, \\theta, \phi, M')
 
-x = Coordinates('\chi', [t, x, y, z])
+X = Coordinates('\chi', [t, r, theta, phi])
 
-ShwartzMetric = diag(-(1-1/x),1/(1-1/x),x**2,x**2*np.sin(3))
+SchwartzMetric = diag(-(1-2*M/r), 1/(1-2*M/r), r**2, r**2*sin(theta)**2)
 
-gSwartz = MetricTensor('gSwartz', x, ShwartzMetric)
+gSchwartz = MetricTensor('gSchwartz', X, SchwartzMetric)
+
+Ga = Christoffel('Ga', gSchwartz)
+Ri = Ricci('Rm', gSchwartz)
 
 tau = symbols('\\tau')
 
-geodesicShwartz=Geodesic('w', g, tau)
+geodesicSchwartz = Geodesic('w', gSchwartz, tau) #This is giving [0 0 0 0]...
 
 #Other package we should use is Einsteinpy but this is only useable when we choose one specific object
