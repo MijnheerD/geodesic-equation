@@ -9,6 +9,10 @@ class Spacetime:
     def __init__(self, g):
         self.metric = g
         self.__symbols = [Symbol('t'), Symbol('x'), Symbol('y'), Symbol('z')]
+    #Alternative definition
+    #def __init__(self, g, coo1, coo2, coo3, coo4):
+        #self.metric = g
+        #self.__symbols = [Symbol('coo1'), Symbol('coo2'), Symbol('coo3'), Symbol('coo4')]
 
     def symbols(self): #Maybe use this to only give back the symbols used in the metric?
         return self.__symbols
