@@ -6,9 +6,9 @@ from scipy.integrate import solve_ivp, odeint
 
 
 class Spacetime:
-    def __init__(self, g):
+    def __init__(self, g, symbols):
         self.metric = g
-        self.__symbols = [t, x, y, z]
+        self.__symbols = symbols
 
     def symbols(self): #Maybe use this to only give back the symbols used in the metric?
         return self.__symbols
@@ -27,7 +27,7 @@ class Spacetime:
         return diff(self.metric[pos[0], pos[1]], self.__symbols[mu])
 
     def chrisSymbol(self, up, down1, down2):
-        return 0.5*sum([self.metric[up, m] * self.diffMetric([m, down1], down2)+self.metric[up, m] * self.diffMetric([m, down2], down1)-self.metric[up, m] * self.diffMetric([down1, down2], m) for m in range(4)])
+        return 0.5*sum([self.metric[up, m] * self.diffMetric([m, down1], down2)+self.metric[up, m] * self.diffMetric([m, down2], down1)-self.metric[up, m] * self.diffMetric([down1, down2], m) for m in range(len(self.__symbols))])
 
 def geodesicEq(x, s, spacetime):
         if len(x)!=8:
@@ -83,10 +83,11 @@ y = Symbol('y')
 z = Symbol('z')
 
 g = np.array([[t,0,0,0],[0,x,0,0],[0,0,y,0],[0,0,0,z]])
-ST = Spacetime(g)
+ST = Spacetime(g, [t, x, y, z])
 
-g_schwartz=np.array([[-(1-1/x),0,0,0],[0,1/(1-1/x),0,0],[0,0,x**2,0],[0,0,0,x**2*np.sin(3)]])
-ST2= Spacetime(g_schwartz)
+#WRONG
+#g_schwartz=np.array([[-(1-1/x),0,0,0],[0,1/(1-1/x),0,0],[0,0,x**2,0],[0,0,0,x**2*np.sin(3)]])
+#ST2= Spacetime(g_schwartz)
 
 
 #Testing
