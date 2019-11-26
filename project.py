@@ -9,18 +9,19 @@ class Spacetime:
     def __init__(self, g, symbols):
         self.metric = g
         self.__symbols = symbols
+        self.diff = [self.diffFullMetric(mu) for mu in self.__symbols]
 
     def symbols(self): #Maybe use this to only give back the symbols used in the metric?
         return self.__symbols
 
-    def diffFullMetric(self, mu):  # Overkill for Christoffel symbols, might be useful later on
+    def diffFullMetric(self, mu):
         shape = self.metric.shape
-        d = np.full(shape, 0)
-        r = len(self.metric)
-        c = len(self.metric[0])
+        r = shape[0]
+        c = shape[1]
+        d = [x[:] for x in [[0] * r] * c]
         for row in range(r):
             for column in range(c):
-                d[row, column] = diff(self.metric[row, column], self.__symbols[mu])
+                d[row][column] = diff(self.metric[row][column], mu)
         return d
 
     def diffMetric(self, pos, mu): #Mu given as number
@@ -28,6 +29,10 @@ class Spacetime:
 
     def chrisSymbol(self, up, down1, down2):
         return 0.5*sum([self.metric[up, m] * self.diffMetric([m, down1], down2)+self.metric[up, m] * self.diffMetric([m, down2], down1)-self.metric[up, m] * self.diffMetric([down1, down2], m) for m in range(len(self.__symbols))])
+
+    def chrisSymbolFast(self, up, down1, down2):
+        return 0.5*sum([self.metric[up][m] * self.diff[down2][m][down1] + self.metric[up][m] * self.diff[down1][m][down2] - self.metric[up][m] * self.diff[m][down1][down2] for m in range(len(self.__symbols))])
+
 
 
 #I added an s argument in order to use odeint for solving the difeq
