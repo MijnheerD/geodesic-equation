@@ -40,23 +40,19 @@ def geodesicEq(x, s, spacetime):
     if type(spacetime) != Spacetime:
         raise TypeError("Input spacetime must be of type Spacetime")
     u = [0]*8
-    symb = spacetime.symbols()  # Maybe only put symbols here that are actually in the metric?
     for i in range(4):
         u[i] = x[i+4]
     for i in range(4, 8):
         v = [spacetime.chrisSymbol(i-4, a, b)*u[a]*u[b] for a in range(4) for b in range(4)]
         p = -sum(v)
-        u[i] = p.subs([(symb[0], x[0]), (symb[1], x[1]), (symb[2], x[2]), (symb[3], x[3])])
+        u[i] = sp.lambdify(spacetime.symbols(), p, 'numpy')(x[0], x[1], x[2], x[3])
     return u
 
 
 def solveGE(equation, xinit, ds, s0, s1, spacetime):
     s = np.arange(s0, s1+ds, ds)
-    solution = odeint(equation, xinit, s, args=(spacetime,), mxstep=10)
-    sol = []
-    for i in solution:
-        sol.append([i[0:4]])
-    return sol
+    solution = solve_ivp(lambda s, x: equation(x, s, spacetime), [s0, s1], xinit, t_eval= np.arange(s0, s1+ds, ds), method='LSODA')
+    return solution
   
 
 def list_mul(lst, f):
