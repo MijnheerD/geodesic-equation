@@ -3,6 +3,7 @@
 from sympy import *
 import numpy as np
 from scipy.integrate import solve_ivp, odeint
+from scipy.constants import G
 
 
 class Spacetime:
