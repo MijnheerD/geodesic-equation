@@ -1,0 +1,25 @@
+\\Questions
+https://scicomp.stackexchange.com/questions/21103/numerical-solution-of-geodesic-differential-equations-with-python
+
+\\Set of books
+https://math.stackexchange.com/questions/2168276/how-to-numerically-integrate-the-geodesic-equations
+
+\\Webpages
+https://en.wikipedia.org/wiki/Solving_the_geodesic_equations
+
+http://cardona.co/math/geodesics/
+
+Function that calculates geodesic (may be nice to compare our results with this)
+https://www.linuxjournal.com/content/general-relativity-python      doesnt work?
+https://docs.einsteinpy.org/en/stable/
+https://github.com/MijnheerD/GraviPy
+
+Visualitions of geodesics:
+http://indico.ictp.it/event/7657/session/6/contribution/41/material/slides/0.pdf
+https://pythonmatplotlibtips.blogspot.com/2017/12/draw-3d-line-animation-using-python-matplotlib-funcanimation.html
+
+
+
+examples of metrics:
+https://en.wikipedia.org/wiki/Near-horizon_metric
+

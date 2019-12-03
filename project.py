@@ -34,8 +34,6 @@ class Spacetime:
         return 0.5*sum([self.metric[up][m] * self.diff[down2][m][down1] + self.metric[up][m] * self.diff[down1][m][down2] - self.metric[up][m] * self.diff[m][down1][down2] for m in range(len(self.__symbols))])
 
 
-
-#I added an s argument in order to use odeint for solving the difeq
 def geodesicEq(x, s, spacetime):
     if len(x) != 8:
         raise TypeError("Input vector must have length 8, not "+str(len(x)))
@@ -59,7 +57,7 @@ def solveGE(equation, xinit, ds, s0, s1, spacetime):
     for i in solution:
         sol.append([i[0:4]])
     return sol
-
+  
 
 def list_mul(lst, f):
     return [f * elem for elem in lst]
@@ -87,3 +85,58 @@ def RK4(equation, xinit, ds, s0, s1, spacetime):
         x = rkStep(x, equation, t, ds, spacetime)
         sol.append(x[0:4])
     return sol
+
+  
+#Examples of Metrics
+t = Symbol('t')
+x = Symbol('x')
+y = Symbol('y')
+z = Symbol('z')
+
+g = np.array([[t,0,0,0],[0,x,0,0],[0,0,y,0],[0,0,0,z]])
+ST = Spacetime(g, [t, x, y, z])
+
+#WRONG
+#g_schwartz=np.array([[-(1-1/x),0,0,0],[0,1/(1-1/x),0,0],[0,0,x**2,0],[0,0,0,x**2*np.sin(3)]])
+#ST2= Spacetime(g_schwartz)
+
+
+#Testing
+s0 = 1
+s1 = 5
+ds = 1
+u0 = [2,3,4,5,2,3,4,5]
+
+#geodesicEq
+#print(geodesicEq(u0,2,ST2))
+
+#solver
+'''
+u = RK4(geodesicEq,u0,ds,s0,s1,ST2)
+print(u)
+
+u2 = solveGE(geodesicEq,u0,ds,s0,s1,ST2)
+print(u2)
+'''
+
+#Lets compare our results with the ones given by implemented python functions by using GraviPy
+
+from gravipy.tensorial import *
+init_printing()
+
+t, r, theta, phi, M = symbols('t, r, \\theta, \phi, M')
+
+X = Coordinates('\chi', [t, r, theta, phi])
+
+SchwartzMetric = diag(-(1-2*M/r), 1/(1-2*M/r), r**2, r**2*sin(theta)**2)
+
+gSchwartz = MetricTensor('gSchwartz', X, SchwartzMetric)
+
+Ga = Christoffel('Ga', gSchwartz)
+Ri = Ricci('Rm', gSchwartz)
+
+tau = symbols('\\tau')
+
+geodesicSchwartz = Geodesic('w', gSchwartz, tau) #This is giving [0 0 0 0]...
+
+#Other package we should use is Einsteinpy but this is only useable when we choose one specific object
