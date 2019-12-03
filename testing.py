@@ -1,5 +1,4 @@
 from project import *
-from math import sin, cos
 #import time
 
 #Examples of Metrics
