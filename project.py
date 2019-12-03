@@ -92,9 +92,10 @@ z = Symbol('z')
 g = np.array([[t,0,0,0],[0,x,0,0],[0,0,y,0],[0,0,0,z]])
 ST = Spacetime(g, [t, x, y, z])
 
-#WRONG
-#g_schwartz=np.array([[-(1-1/x),0,0,0],[0,1/(1-1/x),0,0],[0,0,x**2,0],[0,0,0,x**2*np.sin(3)]])
-#ST2= Spacetime(g_schwartz)
+def schwartzmetric(M):
+    return np.array([[-(1-2*G*M/r*2*10**8),0,0,0],[0,1/(1-2*G*M/r),0,0],[0,0,r**2,0],[0,0,0,r**2*sp.sin(theta)]])
+
+g_schwartz=schwartzmetric(1*10**11)
 
 
 #Testing
@@ -115,23 +116,7 @@ u2 = solveGE(geodesicEq,u0,ds,s0,s1,ST2)
 print(u2)
 '''
 
-#Lets compare our results with the ones given by implemented python functions by using GraviPy
 
-from gravipy.tensorial import *
-init_printing()
-
-t, r, theta, phi, M = symbols('t, r, \\theta, \phi, M')
-
-X = Coordinates('\chi', [t, r, theta, phi])
-
-SchwartzMetric = diag(-(1-2*M/r), 1/(1-2*M/r), r**2, r**2*sin(theta)**2)
-
-gSchwartz = MetricTensor('gSchwartz', X, SchwartzMetric)
-
-Ga = Christoffel('Ga', gSchwartz)
-Ri = Ricci('Rm', gSchwartz)
-
-tau = symbols('\\tau')
 
 geodesicSchwartz = Geodesic('w', gSchwartz, tau) #This is giving [0 0 0 0]...
 
