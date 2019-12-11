@@ -6,3 +6,8 @@
 .idea/workspace.xml
 >>>>>>> Stashed changes
 __pycache__/project.cpython-37.pyc
+/venv/Include/
+/venv/Lib/
+/venv/Scripts/
+/venv/tcl/
+/venv/LICENSE.txt
