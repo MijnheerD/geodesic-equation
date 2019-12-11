@@ -1,5 +1,5 @@
 from project import *
-from vpython import *
+from visual import *
 from scipy.constants import G
 
 
