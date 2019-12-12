@@ -14,7 +14,10 @@ phi = Symbol('phi')
 g = np.array([[t,0,0,0],[0,x,0,0],[0,0,y,0],[0,0,0,z]])
 ST = Spacetime(g, [t,x,y,z])
 
-g_schwartz = np.array([[-(1-1/r),0,0,0],[0,1/(1-1/r),0,0],[0,0,r**2,0],[0,0,0,r**2*sin(theta)]])
+def schwartzmetric(M):
+    return np.array([[-(1-2*G*M/r*2*10**8),0,0,0],[0,1/(1-2*G*M/r),0,0],[0,0,r**2,0],[0,0,0,r**2*sin(theta)]])
+
+g_schwartz = schwartzmetric(5.972e24)
 ST2 = Spacetime(g_schwartz, [t, r,theta,phi])
 
 #This shows a factor of 10 improvement in runtime
