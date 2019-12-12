@@ -14,7 +14,7 @@ phi = Symbol('phi')
 g = np.array([[t,0,0,0],[0,x,0,0],[0,0,y,0],[0,0,0,z]])
 ST = Spacetime(g, [t,x,y,z])
 
-g_schwartz=np.array([[-(1-1/r),0,0,0],[0,1/(1-1/r),0,0],[0,0,r**2,0],[0,0,0,r**2*sin(theta)]])
+g_schwartz = np.array([[-(1-1/r),0,0,0],[0,1/(1-1/r),0,0],[0,0,r**2,0],[0,0,0,r**2*sin(theta)]])
 ST2 = Spacetime(g_schwartz, [t, r,theta,phi])
 
 #This shows a factor of 10 improvement in runtime
