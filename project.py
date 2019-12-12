@@ -2,7 +2,7 @@
 
 from sympy import *
 import numpy as np
-from scipy.integrate import solve_ivp, odeint
+from scipy.integrate import solve_ivp, RK45
 from scipy.constants import G
 
 
@@ -46,14 +46,23 @@ def geodesicEq(x, s, spacetime):
     for i in range(4, 8):
         v = [spacetime.chrisSymbol(i-4, a, b)*u[a]*u[b] for a in range(4) for b in range(4)]
         p = -sum(v)
-        u[i] = sp.lambdify(spacetime.symbols(), p, 'numpy')(x[0], x[1], x[2], x[3])
+        u[i] = lambdify(spacetime.symbols(), p, 'numpy')(x[0], x[1], x[2], x[3])
     return u
 
 
 def solveGE(equation, xinit, ds, s0, s1, spacetime):
-    s = np.arange(s0, s1+ds, ds)
-    solution = solve_ivp(lambda s, x: equation(x, s, spacetime), [s0, s1], xinit, t_eval= np.arange(s0, s1+ds, ds), method='LSODA')
-    return solution
+    return solve_ivp(lambda s, x: equation(x, s, spacetime), [s0, s1], xinit, method = 'LSODA', max_step = ds) #t_eval = np.arange(s0+ds, s1, ds)
+
+
+def rk45(equation, xinit, ds, s0, s1, spacetime):
+    ODE = RK45(lambda s, x: equation(x, s, spacetime), s0, xinit, s1, max_step = ds)
+    t = []
+    y = []
+    while ODE.t < s1:
+        t.append(ODE.t)
+        y.append(ODE.y)
+        ODE.step()
+    return t, y
   
 
 def list_mul(lst, f):
@@ -73,12 +82,10 @@ def rkStep(yn, f, tn, h, spacetime):
 
 
 def RK4(equation, xinit, ds, s0, s1, spacetime):
-    print("Going into RK4")
     s = np.arange(s0, s1+ds, ds)
     sol = []
     x = xinit
     for t in s:
-        print(t)
         x = rkStep(x, equation, t, ds, spacetime)
         sol.append(x[0:4])
     return sol
