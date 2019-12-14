@@ -12,3 +12,4 @@ __pycache__/project.cpython-37.pyc
 /venv/tcl/
 /venv/LICENSE.txt
 project.pyc
+/solver.pbs
