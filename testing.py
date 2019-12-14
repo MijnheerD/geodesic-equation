@@ -35,9 +35,9 @@ x = [0, 306.0, np.pi/2, -np.pi/6, 0, 0, 0, 1900]
 #u = rk4(geodesicEq, x, ds, s0, 2, ST2)
 #print(u)
 
-u2 = solveGE(geodesicEq, x, ds, s0, s1, ST2)
+u2 = solveGE(geodesicEq, x, ds, s0, s1, ST)
 print(u2.y)
-write_out([u2.t] + u2.y[1:4], 'spherical', 'solveGE.txt')
+write_out([u2.t] + list(u2.y[1:4]), 'spherical', 'solveGE.txt')
 
 t3, y3 = rk45(geodesicEq, x, ds, s0, s1, ST2)
 x = []

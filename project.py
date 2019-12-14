@@ -50,7 +50,7 @@ def geodesicEq(x, s, spacetime):
 
 
 def solveGE(equation, xinit, ds, s0, s1, spacetime):
-    return solve_ivp(lambda s, x: equation(x, s, spacetime), [s0, s1], xinit, method = 'LSODA', max_step = ds) #t_eval = np.arange(s0+ds, s1, ds)
+    return solve_ivp(lambda s, x: equation(x, s, spacetime), [s0, s1], xinit, t_eval = np.arange(s0+ds, s1, ds), method = 'LSODA', max_step = ds) #
 
 
 def rk45(equation, xinit, ds, s0, s1, spacetime):
