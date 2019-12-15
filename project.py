@@ -53,12 +53,11 @@ def solveGE(equation, xinit, ds, s0, s1, spacetime):
     return solve_ivp(lambda s, x: equation(x, s, spacetime), [s0, s1], xinit, t_eval = np.arange(s0+ds, s1, ds), method = 'LSODA', max_step = ds) #
 
 
-def rk45(equation, xinit, ds, s0, s1, spacetime):
-    ODE = RK45(lambda s, x: equation(x, s, spacetime), s0, xinit, s1, max_step = ds)
+def rk45(equation, xinit, ds, s0, s1, spacetime, OdeMethodKwargs={"stepsize": 1e-3}):
+    ODE = RK45(lambda s, x: equation(x, s, spacetime), s0, xinit, s1, max_step = ds, **OdeMethodKwargs)
     t = []
     y = []
     while ODE.t < s1:
-        print("Still alive " +str(ODE.t))
         t.append(ODE.t)
         y.append(ODE.y)
         ODE.step()
@@ -88,7 +87,7 @@ def rk4(equation, xinit, ds, s0, s1, spacetime):
     for t in s:
         x = rkStep(x, equation, t, ds, spacetime)
         sol.append(x[0:4])
-    return sol
+    return s, sol
 
 
 def write_out(data, coord, filename):
@@ -112,29 +111,3 @@ def write_out(data, coord, filename):
     f.write("\n")
     for item in z:
         f.write("%f " % item)
-
-
-def read_out(filename):
-    f = open(filename, "r")
-    line = f.readline()
-    coord = line.split()[0]
-    line = f.readline()
-    t = [float(elem) for elem in line.split()]
-    line = f.readline()
-    r = [float(elem) for elem in line.split()]
-    line = f.readline()
-    theta = [float(elem) for elem in line.split()]
-    line = f.readline()
-    phi = [float(elem) for elem in line.split()]
-    f.close()
-
-    if coord == 'spherical':
-        y = [r[i] * sin(theta[i]) * sin(phi[i]) for i in range(len(theta))]
-        x = [r[i] * sin(theta[i]) * cos(phi[i]) for i in range(len(theta))]
-        z = [r[i] * cos(theta[i]) for i in range(len(theta))]
-        return (t, x, y, z)
-    elif coord == 'cart':
-        return (t, r, theta, phi)
-    else:
-        raise NameError("Coordinate system unknown")
-
