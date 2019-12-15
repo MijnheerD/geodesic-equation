@@ -1,0 +1,17 @@
+
+<<<<<<< Updated upstream
+.idea/geodesic-equation.iml
+*.xml
+=======
+.idea/workspace.xml
+>>>>>>> Stashed changes
+__pycache__/project.cpython-37.pyc
+/venv/Include/
+/venv/Lib/
+/venv/Scripts/
+/venv/tcl/
+/venv/LICENSE.txt
+project.pyc
+/solver.pbs
+__pycache__/animation.cpython-37.pyc
+project.pyc
