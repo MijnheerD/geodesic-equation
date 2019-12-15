@@ -1,4 +1,5 @@
 import numpy as np
+from project import write_out
 from astropy import units as u
 from einsteinpy.coordinates import SphericalDifferential, CartesianDifferential
 from einsteinpy.metric import Schwarzschild
@@ -11,4 +12,11 @@ obj = Schwarzschild.from_coords(sph_coord, M , 0* u.s)
 end_tau = 0.01 # approximately equal to coordinate time
 stepsize = 0.3e-6
 ans = obj.calculate_trajectory(end_lambda=end_tau, OdeMethodKwargs={"stepsize":stepsize})
-print(ans)
+x = []
+y = []
+z = []
+for i in range(len(ans[1])):
+    x.append(ans[1][i][1])
+    y.append(ans[1][i][2])
+    z.append(ans[1][i][3])
+write_out([ans[0]] + [x] + [y] + [z], 'spherical', "solveEinstein.txt")
