@@ -77,5 +77,5 @@ def animate_minkowski_geodesic(file, rt):
 #animate_schwarzschild_geodesic("solveEinstein_phi.txt", 5.972e24, 100)
 #animate_schwarzschild_geodesic("solveGE_theta.txt", 5.972e24, 900)
 #animate_schwarzschild_geodesic("solveEinstein_theta.txt", 5.972e24, 100)
-animate_schwarzschild_geodesic("solveEinstein_randphi.txt", 5.972e30, 100)
+animate_schwarzschild_geodesic("solveEinstein_randphi.txt", 5.972e24, 100)
 #animate_schwarzschild_geodesic("RK4.txt", 5.972e24, 5000)
